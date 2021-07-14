@@ -75,7 +75,7 @@ class Movies extends Component {
                     </tbody>
                 </table>
                 <p>
-                    <Button tag={Link} to="/new">Add Movie</Button>
+                    <Button color="primary" tag={Link} to="/new">Add Movie</Button>
                 </p>
             </div>
         );

@@ -42,20 +42,19 @@ export class Movie extends Component {
                 });
     }
 
-
     render() {
         return (
             <tr>
                 <td>{this.props.movie.title}</td>
                 <td>
-                    <Button
-                        onClick={() => this.toggle(this.props.movie)}>{this.props.movie.watched ? "✔" : "✘"}</Button>
+                    <Button color={this.props.movie.watched ? "success" : "secondary"}
+                            onClick={() => this.toggle(this.props.movie)}>{this.props.movie.watched ? "✔" : "✘"}</Button>
                 </td>
                 <td>
-                    <Button tag={Link} to={"/" + this.props.movie.id}>🖉</Button>
+                    <Button color="warning" tag={Link} to={"/" + this.props.movie.id}>🖉</Button>
                 </td>
                 <td>
-                    <Button onClick={() => this.remove(this.props.movie)}>🗑</Button>
+                    <Button color="danger" onClick={() => this.remove(this.props.movie)}>🗑</Button>
                 </td>
             </tr>
         );
