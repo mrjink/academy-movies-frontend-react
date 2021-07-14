@@ -1,10 +1,28 @@
-import {Component} from "react";
+import {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {Button} from 'reactstrap';
 
 export class Movie extends Component {
     constructor(props) {
         super(props);
-        this.remove = this.remove.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.remove = this.remove.bind(this);
+    }
+
+    toggle(movie) {
+        fetch(`/watched/${movie.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(
+            () => {
+                this.props.updateMovies();
+            },
+            (error) => {
+                console.log(error);
+            });
     }
 
     remove(movie) {
@@ -16,7 +34,7 @@ export class Movie extends Component {
                     'Content-Type': 'application/json'
                 }
             }).then(
-                (result) => {
+                () => {
                     this.props.updateMovies();
                 },
                 (error) => {
@@ -24,29 +42,21 @@ export class Movie extends Component {
                 });
     }
 
-    toggle(movie) {
-        fetch(`/watched/${movie.id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(
-            (result) => {
-                this.props.updateMovies();
-            },
-            (error) => {
-                console.log(error);
-            });
-    }
-
 
     render() {
         return (
             <tr>
                 <td>{this.props.movie.title}</td>
-                <td onClick={() => this.toggle(this.props.movie)}>{this.props.movie.watched ? "✔" : "✘"}</td>
-                <td onClick={() => this.remove(this.props.movie)}>🗑</td>
+                <td>
+                    <Button
+                        onClick={() => this.toggle(this.props.movie)}>{this.props.movie.watched ? "✔" : "✘"}</Button>
+                </td>
+                <td>
+                    <Button tag={Link} to={"/" + this.props.movie.id}>🖉</Button>
+                </td>
+                <td>
+                    <Button onClick={() => this.remove(this.props.movie)}>🗑</Button>
+                </td>
             </tr>
         );
     }

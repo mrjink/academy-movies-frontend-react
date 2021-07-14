@@ -1,6 +1,8 @@
 import './Movies.css';
-import {Component} from "react";
-import Movie from "./Movie";
+import {Component} from 'react';
+import Movie from './Movie';
+import {Button} from "reactstrap";
+import {Link} from "react-router-dom";
 
 class Movies extends Component {
     constructor(props) {
@@ -16,21 +18,26 @@ class Movies extends Component {
     updateMovies() {
         this.setState({isLoaded: false, error: ""})
         fetch("/all")
-            .then(res => res.json())
             .then(
                 (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        error: "",
-                        movies: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error: error,
-                        movies: undefined
-                    });
+                    if (result.ok) {
+                        result.json().then(movies =>
+                            this.setState({
+                                isLoaded: true,
+                                error: "",
+                                movies: movies
+                            })
+                        );
+                    } else {
+                        console.log(result);
+                        result.json().then((error) =>
+                            this.setState({
+                                isLoaded: true,
+                                error: error.message,
+                                movies: undefined
+                            })
+                        );
+                    }
                 }
             )
     }
@@ -57,15 +64,19 @@ class Movies extends Component {
                     <tr>
                         <th>Title</th>
                         <th>Watched</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
                     {this.state.movies.map(movie => (
-                        <Movie updateMovies={this.updateMovies} movie={movie}/>
+                        <Movie key={movie.id} updateMovies={this.updateMovies} movie={movie}/>
                     ))}
                     </tbody>
                 </table>
+                <p>
+                    <Button tag={Link} to="/new">Add Movie</Button>
+                </p>
             </div>
         );
     }
