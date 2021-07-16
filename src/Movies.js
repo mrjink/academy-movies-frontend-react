@@ -57,7 +57,7 @@ class Movies extends Component {
                     <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Watched</th>
+                        <th>Seen</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>

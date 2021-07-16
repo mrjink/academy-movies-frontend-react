@@ -78,7 +78,7 @@ class MovieEdit extends Component {
                                onChange={this.handleChange}/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="watched">Watched</Label>
+                        <Label for="watched">Seen</Label>
                         <Input type="checkbox" name="watched" id="watched" checked={this.state.movie.watched}
                                onChange={this.handleChange}/>
                     </FormGroup>
