@@ -1,8 +1,6 @@
 import {Component} from 'react';
 import axios from 'axios';
 import Movie from './Movie';
-import {Button} from "reactstrap";
-import {Link} from "react-router-dom";
 
 class Movies extends Component {
     constructor(props) {
@@ -68,9 +66,6 @@ class Movies extends Component {
                     ))}
                     </tbody>
                 </table>
-                <p>
-                    <Button color="primary" tag={Link} to="/new">Add Movie</Button>
-                </p>
             </div>
         );
     }
