@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Button} from 'reactstrap';
+import axios from "axios";
 
 export class Movie extends Component {
     constructor(props) {
@@ -10,34 +11,24 @@ export class Movie extends Component {
     }
 
     toggle(movie) {
-        fetch(`/watched/${movie.id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(
-            () => {
+        axios
+            .put(`http://localhost:8080/api/movie/watched/${movie.id}`, {})
+            .then(() => {
                 this.props.updateMovies();
-            },
-            (error) => {
+            })
+            .catch(error => {
                 console.log(error);
             });
     }
 
     remove(movie) {
         if (window.confirm('Are you sure you want to delete "' + movie.title + '"?'))
-            fetch(`/delete/${movie.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then(
-                () => {
+            axios
+                .delete(`http://localhost:8080/api/movie/delete/${movie.id}`)
+                .then(() => {
                     this.props.updateMovies();
-                },
-                (error) => {
+                })
+                .catch(error => {
                     console.log(error);
                 });
     }

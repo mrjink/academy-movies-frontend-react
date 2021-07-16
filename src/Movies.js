@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import axios from 'axios';
 import Movie from './Movie';
 import {Button} from "reactstrap";
 import {Link} from "react-router-dom";
@@ -16,29 +17,23 @@ class Movies extends Component {
 
     updateMovies() {
         this.setState({isLoaded: false, error: ""})
-        fetch("/all")
-            .then(
-                (result) => {
-                    if (result.ok) {
-                        result.json().then(movies =>
-                            this.setState({
-                                isLoaded: true,
-                                error: "",
-                                movies: movies
-                            })
-                        );
-                    } else {
-                        console.log(result);
-                        result.json().then((error) =>
-                            this.setState({
-                                isLoaded: true,
-                                error: error.message,
-                                movies: undefined
-                            })
-                        );
-                    }
-                }
-            )
+        axios
+            .get("http://localhost:8080/api/movie/all")
+            .then(result => {
+                this.setState({
+                    isLoaded: true,
+                    error: "",
+                    movies: result.data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    isLoaded: true,
+                    error: error.message,
+                    movies: undefined
+                })
+            })
     }
 
     render() {

@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
+import axios from "axios";
 
 class MovieEdit extends Component {
 
@@ -20,16 +21,15 @@ class MovieEdit extends Component {
 
     componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            fetch(`/${this.props.match.params.id}`)
-                .then(
-                    (result) => {
-                        if (result.ok) {
-                            return result.json().then(value => this.setState({movie: value}));
-                        } else {
-                            this.props.history.push('/new');
-                        }
-                    }
-                );
+            axios
+                .get(`http://localhost:8080/api/movie/${this.props.match.params.id}`)
+                .then(result => {
+                    this.setState({movie: result.data})
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.props.history.push('/new');
+                });
         }
     }
 
@@ -47,26 +47,22 @@ class MovieEdit extends Component {
         event.preventDefault();
         const {movie} = this.state;
 
-        const url = movie.id ? '/' + movie.id : '/';
         const method = movie.id ? 'PUT' : 'POST';
+        const url = 'http://localhost:8080/api/movie/' + (movie.id ? movie.id : '');
 
-        fetch(url, {
-            method: method,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(movie)
-        }).then(
-            (result) => {
-                if (result.ok) {
-                    this.props.history.push('/')
-                } else {
-                    window.alert("Error!");
-                    console.log(result);
-                }
-            }
-        );
+        axios(
+            {
+                method: method,
+                url: url,
+                data: movie
+            })
+            .then(() => {
+                this.props.history.push('/');
+            })
+            .catch(error => {
+                window.alert("Error!");
+                console.log(error);
+            });
     }
 
     render() {
