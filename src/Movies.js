@@ -1,4 +1,3 @@
-import './Movies.css';
 import {Component} from 'react';
 import Movie from './Movie';
 import {Button} from "reactstrap";
